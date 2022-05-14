@@ -39,6 +39,7 @@ func loadDrivers() {
 	_drivers = append(_drivers, drivers.NewDriverBilibili())
 	_drivers = append(_drivers, drivers.NewDriverBaijia())
 	_drivers = append(_drivers, drivers.NewDriverSogou())
+	_drivers = append(_drivers, drivers.NewDriverChaoXing())
 }
 
 // metaURL -> Driver
