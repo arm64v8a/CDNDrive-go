@@ -47,7 +47,7 @@ func main() {
 	app := &cli.App{
 		Name:    "CDNDrive-go",
 		Usage:   "Make Picbeds Great Cloud Storages!",
-		Version: "v0.9",
+		Version: "v0.9.1",
 		Authors: []*cli.Author{
 			&cli.Author{
 				Name: "猫村あおい",
