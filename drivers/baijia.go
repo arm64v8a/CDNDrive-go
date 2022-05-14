@@ -79,6 +79,10 @@ func (d *DriverBaijia) Real2Meta(realURL string) string {
 	return "bjdrive://" + matchs[1]
 }
 
+func (d *DriverBaijia) Login(username, password string) (string, error) {
+	return "", errors.New("无需登录")
+}
+
 func (d *DriverBaijia) CheckCookie(cookie string) (bool, error) {
 	//这个貌似不需要 Cookie 就能传
 	return true, nil

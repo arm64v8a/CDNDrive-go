@@ -176,6 +176,45 @@ func main() {
 					}
 					return nil
 				},
+			}, &cli.Command{
+				Name:    "login",
+				Aliases: []string{"l"},
+				Usage:   "使用用户名和密码登录",
+				Flags: []cli.Flag{
+					flag_drivers,
+					&cli.StringFlag{
+						Name:    "username",
+						Aliases: []string{"u"},
+						Usage:   "用户名",
+					},
+					&cli.StringFlag{
+						Name:    "password",
+						Aliases: []string{"p"},
+						Usage:   "密码",
+					},
+				},
+				Action: func(c *cli.Context) error {
+					ds := vaildDrivers(c.String("driver"))
+					if len(c.String("username")) == 0 || len(c.String("password")) == 0 || len(ds) == 0 {
+						cli.ShowCommandHelpAndExit(c, "login", 1)
+					}
+
+					if len(ds) > 1 {
+						fmt.Println("登录时一次只能输入一个 driver")
+						return nil
+					}
+
+					for _, driver := range ds {
+						err := userLogin(driver, c.String("username"), c.String("password"))
+						if err == nil {
+							fmt.Println("登录成功")
+						} else {
+							fmt.Println("登录失败", err.Error())
+						}
+					}
+
+					return nil
+				},
 			},
 		},
 	}

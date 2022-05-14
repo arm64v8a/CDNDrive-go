@@ -24,6 +24,21 @@ type userCookieJson struct {
 	fp     *os.File
 }
 
+func userLogin(driver drivers.Driver, username, password string) error {
+	cookie, err := driver.Login(username, password)
+	if err != nil {
+		return err
+	}
+	cookieJson := loadUserCookie()
+	driverName := driver.Name()
+	err = cookieJson.setDriveCookie(driverName, cookie, false)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func loadUserCookie() *userCookieJson {
 	v := &userCookieJson{Cookie: make(map[string]string)}
 

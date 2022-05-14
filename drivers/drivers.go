@@ -17,9 +17,10 @@ type Driver interface {
 	Headers() map[string]string //http要用
 	Encoder() encoders.Encoder  //使用的Encoder
 
-	Exist(hash string) (bool, error) //图片是否已存在
-	Meta2Real(metaURL string) string //bdex:// -> URL （模糊匹配）
-	Real2Meta(realURL string) string //URL -> bdex://
+	Exist(hash string) (bool, error)                 //图片是否已存在
+	Meta2Real(metaURL string) string                 //bdex:// -> URL （模糊匹配）
+	Real2Meta(realURL string) string                 //URL -> bdex://
+	Login(username, password string) (string, error) //登录
 	CheckCookie(cookie string) (bool, error)
 	Upload(data []byte, ctx context.Context, client *http.Client, cookie string) (string, error) //data是图片
 }

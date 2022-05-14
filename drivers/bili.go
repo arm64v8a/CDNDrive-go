@@ -118,6 +118,10 @@ func (d *DriverBilibili) Real2Meta(realURL string) string {
 	return "bdex://" + matchs[1]
 }
 
+func (d *DriverBilibili) Login(username, password string) (string, error) {
+	return "", errors.New("尚未实现该功能")
+}
+
 func (d *DriverBilibili) CheckCookie(cookie string) (bool, error) {
 	req, _ := http.NewRequest("GET", "https://api.bilibili.com/x/space/myinfo", nil)
 	for k, v := range d.Headers() {

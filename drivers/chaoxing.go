@@ -72,6 +72,49 @@ func (d *DriverChaoXing) Real2Meta(realURL string) string {
 	return "cxdrive://" + matchs[1]
 }
 
+func (d *DriverChaoXing) Login(username, password string) (string, error) {
+	url := fmt.Sprintf("https://passport2.chaoxing.com/api/login?verify=0&name=%s&pwd=%s", username, password)
+	req, _ := http.NewRequest("GET", url, nil)
+	for k, v := range d.Headers() {
+		req.Header.Set(k, v)
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	v := &struct {
+		Result    bool   `json:"result"`
+		UID       int    `json:"uid"`
+		Uname     string `json:"uname"`
+		Phone     string `json:"phone"`
+		Roleid    string `json:"roleid"`
+		Schoolid  int    `json:"schoolid"`
+		OpacPwd   bool   `json:"opacPwd"`
+		Cxid      int    `json:"cxid"`
+		Email     string `json:"email"`
+		IsCertify int    `json:"isCertify"`
+		Realname  string `json:"realname"`
+		Status    string `json:"status"`
+	}{}
+
+	err = json.NewDecoder(resp.Body).Decode(v)
+	if err != nil {
+		return "", err
+	}
+	if v.Result == true {
+		cookie := resp.Cookies()
+		var cookieStr = ""
+		for _, c := range cookie {
+			cookieStr += c.Name + "=" + c.Value + "; "
+		}
+		return cookieStr, nil
+	}
+	return "", errors.New("chaoxing: 登录失败")
+}
+
 func (d *DriverChaoXing) CheckCookie(cookie string) (bool, error) {
 	req, _ := http.NewRequest("GET", "http://mooc1-1.chaoxing.com/api/workTestPendingNew", nil)
 	for k, v := range d.Headers() {
